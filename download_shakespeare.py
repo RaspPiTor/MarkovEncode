@@ -1,5 +1,5 @@
-import requests
 import json
+import requests
 import bs4
 
 
@@ -13,6 +13,7 @@ def get_urls():
             name = url.rstrip('/index.html')
             urls.append(base_url.format(name=name))
     return urls
+
 
 def download():
     urls = get_urls()
