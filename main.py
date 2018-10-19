@@ -25,16 +25,15 @@ class GUI(ttk.Frame):
         self.encoded_in.grid(row=1, column=1)
         self.plain_out = CompleteText(self)
         self.plain_out.grid(row=2, column=1)
-        self.plain_in.bind('<Key>', self.manage_encryption)
-        self.encoded_in.bind('<Key>', self.manage_encryption)
+        self.plain_in.bind('<Key>', self.delayed)
+        self.encoded_in.bind('<Key>', self.delayed)
+    def delayed(self, _=None):
+        self.after(10, self.manage_encryption)
     def manage_encryption(self, _=None):
         encoded_out = ''.join(self.me.encode(self.plain_in.get('1.0', 'end-1c').encode()))
-        try:
-            encoded_in = self.encoded_in.get('1.0', 'end-1c').strip()
-            plain_out = self.me.decode(encoded_in)
-        except Exception as error:
-            plain_out = '%s %s' % (error, error.with_traceback(None))
         self.encoded_out.replace('1.0', 'end-1c', encoded_out)
+        encoded_in = self.encoded_in.get('1.0', 'end-1c').strip()
+        plain_out = self.me.decode(encoded_in)
         self.plain_out.replace('1.0', 'end-1c', plain_out)
         
 
